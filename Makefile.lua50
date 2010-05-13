@@ -1,0 +1,42 @@
+# Define module name, objects and version
+MODULE = toluaex
+OBJS = ltoluaex.o
+HDRS =
+VERSION = 0.1
+
+# Package file for automatic bindings vith tolua
+USERPKG=
+
+# Add any module specific flag here
+USERCFLAGS=
+USERCXXFLAGS=
+USERLDFLAGS=
+USERLIBDIR=
+USERLIBS=
+
+# Documentation
+DOCDIR=
+DOCS=
+
+# Some specific control flags
+USE_READLINE=no
+USE_TOLUA=yes
+USE_BINDDEPEND=no
+
+# Set the following variable to yes if there is a C shared library, either
+# primary or secondary
+CMOD=yes
+
+# Set the following variable to yes if the primary module is a Lua Library
+LMOD=yes
+
+# Define generic targets
+all: mall
+depend: mdepend
+clean: mclean
+install: minstall
+uninstall: muninstall
+test: mtest
+
+# Nothing to define below this line
+include ../rules.mk
