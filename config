@@ -6,39 +6,35 @@ MODVERS = 1.0
 MODULE = $(MODNAME)
 
 #
+# Objects
+#
+OBJS := ltoluaex.o
+# 
+# Documentation
+# 
+DOCS := doc/*
+#
 # Current Version
 #
 VERSION=1.0
 
 #
+# Your system. Expands to 'GNU/Linux', 'Cygwin' or 'Msys'
+#
+SYSTEM = $(shell uname -o)
+
+#
 # Lua Installation path
 #
 ifneq (, $(findstring Msys, $(SYSTEM)))
-  LUA="c:/usr/local"
+  LUA=c:/usr/local
 else
   LUA=/usr/local
 endif
 
-#
-# Root of Lua Installation
-#
-ifneq (, $(findsring Msys, $(SYSTEM)))
-  INSTALL_ROOT=c:/usr/local
-else
-  INSTALL_ROOT=/usr/local
-endif
-INSTALL_SHARE=$(INSTALL_ROOT)/share/lua/$(LUAVERS)
-INSTALL_LIB=$(INSTALL_ROOT)/lib/lua/$(LUAVERS)
-
-
 # ====================================================== 
 # You probably do not need to change anything below 
 #
-
-#
-# Your system. Expands to 'GNU/Linux', 'Cygwin' or 'Msys'
-#
-SYSTEM = $(shell uname -o)
 
 #
 # Compat-5.1 location
@@ -74,12 +70,13 @@ endif
 #
 DEF=$(DEFCOMPAT) -DVERSION='"$(VERSION)"'
 CC=gcc
-#CFLAGS=-I$(LUAINC) -I$(COMPAT) $(DEF) -pedantic -Wall -O3
-CFLAGS=-I$(LUAINC) -I$(COMPAT) $(DEF) -pedantic -Wall -ggdb -fPIC
+
 LD=gcc
 ifneq (, $(findstring Linux, $(SYSTEM)))
+  CFLAGS=-I$(LUAINC) -I$(COMPAT) $(DEF) -pedantic -Wall -O3 -fPIC
   LDFLAGS=-O -shared -fPIC
 else
+  CFLAGS=-I$(LUAINC) -I$(COMPAT) $(DEF) -pedantic -Wall -O3
   LDFLAGS=-O -shared
 endif
 
@@ -94,3 +91,31 @@ else
   EXPORTDIR=$(HOME)/exports
   DISTARCH=$(DISTNAME).tar.gz
 endif
+
+#
+# Root of Lua Installation
+#
+ifneq (, $(findstring Msys, $(SYSTEM)))
+  INSTALL_ROOT=c:/usr/local
+else
+  INSTALL_ROOT=/usr/local
+endif
+INSTALL_SHARE=$(INSTALL_ROOT)/share/lua/$V
+INSTALL_LIB=$(INSTALL_ROOT)/lib/lua/$V
+INSTALL_DOC=$(INSTALL_ROOT)/share/doc
+
+# Installation tools
+MKDIR = mkdir -p
+ifneq (,$(findstring Msys, $(SYSTEM)))
+  INSTALL = c:/msys/1.0/bin/install.exe -p
+  GIT =  c:/msysgit/msysgit/bin/git.exe
+  GZIP = c:/msysgit/msysgit/bin/gzip.exe
+else
+  INSTALL = install.exe -p
+  GIT =  git
+  GZIP = gzip
+endif
+INSTALL_EXEC = $(INSTALL) -m 0755 
+INSTALL_DATA = $(INSTALL) -m 0644
+RM = rm -rf
+
