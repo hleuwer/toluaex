@@ -1,7 +1,7 @@
 include config
 
 all clean depend:
-	cd src; $(MAKE) $@
+	cd src && $(MAKE) $@
 
 uclean: clean
 	rm -f `find . -name "*~"`
