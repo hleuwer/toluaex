@@ -18,7 +18,7 @@ LUAVERS = 5.1
 #
 # Lua Installation path
 #
-LUA = ../..
+LUA = /usr/local
 
 #
 # Repository (SVN)
@@ -54,12 +54,11 @@ COMPAT=compat-5.1r5
 #
 # Lua specifics
 #
-ifeq ($(LUAVERS), 5.0)
-  LV := 50
+ifeq ($(SYSTEM), Cygwin)
   DEFCOMPAT=
-  LUAINC=$(LUA)/../include
+  LUAINC=$(LUA)/include
   LUABIN=$(LUA)/bin/lua$(LV)
-  LUALIB=$(LUA)/../lib
+  LUALIB=$(LUA)/lib
 else
   LV :=
   DEFCOMPAT=-DCOMPAT_H
@@ -74,15 +73,15 @@ endif
 #
 ifeq ($(SYSTEM), Cygwin)
 
-# Cygwin: need to link against Lua libraries
-X = dll
-LIBS=-llua$(LV)
+  # Cygwin: need to link against Lua libraries
+  X = dll
+  LIBS=-llua$(LV)
 
 else
 
-# Linux
-X = so
-LIBS=
+  # Linux
+  X = so
+  LIBS=
 endif
 
 #
@@ -93,7 +92,7 @@ CC=gcc
 #CFLAGS=-I$(LUAINC) -I$(COMPAT) $(DEF) -pedantic -Wall -O3
 CFLAGS=-I$(LUAINC) -I$(COMPAT) $(DEF) -pedantic -Wall -ggdb -fPIC
 LD=gcc
-LDFLAGS=-O -shared -fPIC
+LDFLAGS=-O -shared -L$(LUALIB) -fPIC
 
 #
 # Distribution stuff
