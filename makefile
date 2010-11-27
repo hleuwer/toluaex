@@ -1,31 +1,39 @@
 include config
 
 all clean depend:
-	cd src; $(MAKE) $@
-
+	cd src && $(MAKE) $@
+	
 uclean: clean
-	rm -f `find . -name "*~"`
+	cd src && $(MAKE) $@
+	find . -name "*~" | xargs $(RM)
 
 install: all
-	cd src; mkdir -p $(INSTALL_SHARE)
-	if test -e $(MODNAME).lua; then cp $(MODNAME).lua $(INSTALL_SHARE); fi
-	cd src; mkdir -p $(INSTALL_LIB)/$(MODNAME)
-	cd src; cp $(MODNAME).$X $(INSTALL_LIB)/$(MODNAME)/core.$X
-
-uninstall:
-	rm -rf $(INSTALL_SHARE)/$(MODNAME).lua
-	rm -rf $(INSTALL_LIB)/$(MODNAME)
-
+	$(MKDIR) $(INSTALL_SHARE) $(INSTALL_LIB)/$(MODNAME) $(INSTALL_DOC)/$(MODNAME)
+	$(INSTALL_DATA) $(MODNAME).lua $(INSTALL_SHARE)
+	$(INSTALL_DATA) src/$(MODNAME).$X $(INSTALL_LIB)/$(MODNAME)/core.$X
+	cp -rf $(DOCS) $(INSTALL_DOC)/$(MODNAME)
+	
+uninstall: 
+	$(RM) $(INSTALL_SHARE)/$(MODNAME).lua
+	$(RM) $(INSTALL_LIB)/$(MODNAME)
+	$(RM) $(INSTALL_DOC)
+	
 test testd:
 	@echo "See module 'objtest'!"
 
 doc:
-	mkdir -p doc
-	luadoc -d doc toluaex.lua
+	$(MKDIR) doc
+	$(LUADOC) -d doc $(MODNAME).lua
 
 dist::
-	svn export $(REPOSITORY)/$(SVNMODULE) $(EXPORTDIR)/$(DISTNAME)
-	cd $(EXPORTDIR); tar -cvzf $(DISTARCH) $(DISTNAME)/*
-	rm -rf $(EXPORTDIR)/$(DISTNAME)
+	$(MKDIR) $(EXPORTDIR)
+ifeq (, $(findstring Msys, $(SYSTEM)))
+	$(GIT) archive --format=tar --prefix=$(DISTNAME)/ HEAD | $(GZIP) >$(EXPORTDIR)/$(DISTARCH)	
+else
+	$(GIT) archive --format=zip --prefix=$(DISTNAME)/ HEAD > $(EXPORTDIR)/$(DISTARCH)	
+endif
 
-.PHONY: all dist test testd depend clean uclean install uninstall dist
+sys:
+	@echo "system is: $(SYSTEM)"
+	
+.PHONY: all dist test testd depend clean uclean install uninstall dist sys
