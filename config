@@ -32,14 +32,14 @@ else
   DISTARCH=$(DISTNAME).tar.gz
 endif
 
-# Root of Lua Installation
+# Installation Directories
 ifneq (, $(findstring Msys, $(SYSTEM)))
   INSTALL_ROOT=c:/usr/local
 else
   INSTALL_ROOT=/usr/local
 endif
-INSTALL_SHARE=$(INSTALL_ROOT)/share/lua/$V
-INSTALL_LIB=$(INSTALL_ROOT)/lib/lua/$V
+INSTALL_SHARE=$(INSTALL_ROOT)/share/lua/$(LV)
+INSTALL_LIB=$(INSTALL_ROOT)/lib/lua/$(LV)
 INSTALL_DOC=$(INSTALL_ROOT)/share/doc
 
 # Installation tools
@@ -64,8 +64,8 @@ RM = rm -rf
 COMPAT=compat-5.1r5
 
 # Lua specifics
-V :=5.1
-X :=51
+LV :=5.1
+LX :=51
 DEFCOMPAT=-DCOMPAT_H
 LUAINC=$(LUA)/include
 LUABIN=$(LUA)
@@ -74,12 +74,12 @@ LUALIB=$(LUA)
 # Platform specific differences
 ifneq (, $(findstring Linux, $(SYSTEM)))
   # Linux: need not to link againt Lua libraries
-  EXT = so
+  X := so
   LIBS=
 else
   # Cygwin/Mingw: need to link against Lua libraries
-  EXT = dll
-  LIBS=-llua$X
+  X := dll
+  LIBS=-llua$(LV)
 endif
 
 # Compiler and Linker
@@ -89,10 +89,10 @@ CC=gcc
 LD=gcc
 ifneq (, $(findstring Linux, $(SYSTEM)))
   CFLAGS=-I$(LUAINC) -I$(COMPAT) $(DEF) -pedantic -Wall -O3 -fPIC
-  LDFLAGS=-O -shared -fPIC
+  LDFLAGS=-O -shared -fPIC -L$(LUALIB)
 else
   CFLAGS=-I$(LUAINC) -I$(COMPAT) $(DEF) -pedantic -Wall -O3
-  LDFLAGS=-O -shared
+  LDFLAGS=-O -shared -L$(LUALIB)
 endif
 
 
