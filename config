@@ -69,7 +69,7 @@ LX :=51
 DEFCOMPAT=-DCOMPAT_H
 LUAINC=$(LUA)/include
 LUABIN=$(LUA)
-LUALIB=$(LUA)
+LUALIB=$(LUA)/lib
 
 # Platform specific differences
 ifneq (, $(findstring Linux, $(SYSTEM)))
@@ -79,7 +79,7 @@ ifneq (, $(findstring Linux, $(SYSTEM)))
 else
   # Cygwin/Mingw: need to link against Lua libraries
   X := dll
-  LIBS=-llua$(LV)
+  LIBS=-llua$(LX)
 endif
 
 # Compiler and Linker
