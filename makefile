@@ -16,7 +16,7 @@ install: all
 uninstall: 
 	$(RM) $(INSTALL_SHARE)/$(MODNAME).lua
 	$(RM) $(INSTALL_LIB)/$(MODNAME)
-	$(RM) $(INSTALL_DOC)
+	$(RM) $(INSTALL_DOC)/$(MODNAME)
 	
 test testd:
 	@echo "See module 'objtest'!"
