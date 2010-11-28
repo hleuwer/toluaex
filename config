@@ -74,12 +74,12 @@ LUALIB=$(LUA)
 # Platform specific differences
 ifneq (, $(findstring Linux, $(SYSTEM)))
   # Linux: need not to link againt Lua libraries
-  X = so
+  EXT = so
   LIBS=
 else
   # Cygwin/Mingw: need to link against Lua libraries
-  X = dll
-  LIBS=-llua$V
+  EXT = dll
+  LIBS=-llua$X
 endif
 
 # Compiler and Linker
