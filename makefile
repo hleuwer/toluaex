@@ -1,29 +1,34 @@
 include config
 
-all clean depend:
+TOP=.
+
+all clean:
 	cd src && $(MAKE) $@
 	
-uclean: clean
+uclean: clean 
 	cd src && $(MAKE) $@
-	find . -name "*~" | xargs $(RM)
+	$(RMTEMP)
 
-install: all
-	$(MKDIR) $(INSTALL_SHARE) $(INSTALL_LIB)/$(MODNAME) $(INSTALL_DOC)/$(MODNAME)
-	$(INSTALL_DATA) $(MODNAME).lua $(INSTALL_SHARE)
-	$(INSTALL_DATA) src/$(MODNAME).$X $(INSTALL_LIB)/$(MODNAME)/core.$X
-	cp -rf $(DOCS) $(INSTALL_DOC)/$(MODNAME)
+install: all doc
+	$(MKDIR) $(INSTALL_SHARE) $(INSTALL_LIB)/$(MODULE) $(INSTALL_DOC)/$(MODULE)
+	$(INSTALL_DATA) $(LUAS) $(INSTALL_SHARE)
+	$(INSTALL_EXEC) $(TOP)/$(BUILD)/$(MODULE).$(SOEXT) $(INSTALL_LIB)/$(MODULE)/core.$(SOEXT)
+	cp -rf $(DOCUMENTS) $(INSTALL_DOC)/$(MODULE)
 	
 uninstall: 
-	$(RM) $(INSTALL_SHARE)/$(MODNAME).lua
-	$(RM) $(INSTALL_LIB)/$(MODNAME)
-	$(RM) $(INSTALL_DOC)/$(MODNAME)
+	cd $(INSTALL_SHARE) && $(RM) $(LUAS)
+	cd $(INSTALL_LIB) && $(RM) $(MODULE)
+	cd $(INSTALL_DOC) && $(RM) $(MODULE)
 	
 test testd:
 	@echo "See module 'objtest'!"
 
-doc:
+doc::
 	$(MKDIR) doc
-	$(LUADOC) -d doc $(MODNAME).lua
+	$(LUADOC) -d doc $(MODULE).lua
+
+clean-doc:
+	$(RM) doc
 
 dist::
 	$(MKDIR) $(EXPORTDIR)
@@ -36,4 +41,4 @@ endif
 sys:
 	@echo "system is: $(SYSTEM)"
 	
-.PHONY: all dist test testd depend clean uclean install uninstall dist sys
+.PHONY: all dist test testd clean uclean install uninstall dist sys

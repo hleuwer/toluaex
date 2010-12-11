@@ -1,24 +1,27 @@
 include ../config
 
+TOP = ..
+TARGET = $(TOP)/$(BUILD)/$(MODULE).$(SOEXT)
+OBJS = $(addprefix $(TOP)/$(BUILD)/, $(OBJECTS))
 
-T = $(MODNAME).$X
+all: $(TOP)/$(BUILD) $(TARGET)
 
-all: $T
+$(TARGET): $(OBJS)
+	$(LD) $(LDFLAGS) -o $@ $< $(LIBS)
+	$(MKDIR) $(TOP)/$(MODULE)
+	$(INSTALL_EXEC) $(TARGET) $(TOP)/$(MODULE)/core.$(SOEXT)
 
-$T: $(OBJS)
-	$(LD) $(LDFLAGS) -o $@ $^ $(LIBS)
-	$(MKDIR) ../$(MODNAME)
-	$(INSTALL_DATA) $T ../$(MODNAME)/core.$X
+$(TOP)/$(BUILD)/%.o: $(TOP)/src/%.c
+	$(CC) -MMD -MF $(@:.o=.d) -c $(CFLAGS) -o$@ $<
 
-SUFFIXES: .c .o .d
-.c.o:
-	$(CC) -MMD -c $(CFLAGS) -o $@ $<
-	
+$(TOP)/$(BUILD):
+	$(MKDIR) $(TOP)/$(BUILD)
+		
 .PHONY: clean uclean
 clean:
-	$(RM) $(OBJS) ../$(MODNAME) $T makefile.deps ../$(MODNAME)
+	$(RM) $(OBJS) $(TOP)/$(MODULE) $(TARGET) 
 	
-uclean:
-	$(RM) $(OBJS:.o=.d)
+uclean: clean
+	$(RM) $(TOP)/$(BUILD)
 	
 -include $(OBJS:.o=.d)

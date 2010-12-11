@@ -68,6 +68,7 @@
 
 
 
+
 <h2>Functions</h2>
 <table class="function_list">
 
@@ -97,7 +98,6 @@
 
 
 
-
 <br/>
 <br/>
 
@@ -113,11 +113,11 @@
 Retrive all base classes of a userdata.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
-	  ud: Userdata for which base classes are searched.
+	  <code><em>ud</em></code>: Userdata for which base classes are searched.
 	</li>
 	
 </ul>
@@ -128,7 +128,7 @@ Retrive all base classes of a userdata.
 
 
 <h3>Return value:</h3>
-Indexed list of class info:<br> <code>{class = {member = value, ...}, type = "L|C"}</code>.
+<ul>Indexed list of class info:<br> <code>{class = {member = value, ...}, type = "L|C"}</code>.</ul>
 
 
 
@@ -142,15 +142,15 @@ Indexed list of class info:<br> <code>{class = {member = value, ...}, type = "L|
 Iterator through all C level members.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
-	  ud: Userdata to iterate.
+	  <code><em>ud</em></code>: Userdata to iterate.
 	</li>
 	
 	<li>
-	  flag: Include (default with nil or false) or exclude inherited members.
+	  <code><em>flag</em></code>: Include (default with nil or false) or exclude inherited members.
 	</li>
 	
 </ul>
@@ -161,7 +161,7 @@ Iterator through all C level members.
 
 
 <h3>Return value:</h3>
-iterator: func, invariant, start.
+<ul>iterator: func, invariant, start.</ul>
 
 
 
@@ -175,11 +175,11 @@ iterator: func, invariant, start.
 Interator through all late binded members (run-time).
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
-	  ud: Userdata to investigate.
+	  <code><em>ud</em></code>: Userdata to investigate.
 	</li>
 	
 </ul>
@@ -190,7 +190,7 @@ Interator through all late binded members (run-time).
 
 
 <h3>Return value:</h3>
-iterator: func, invariant, start.
+<ul>iterator: func, invariant, start.</ul>
 
 
 
@@ -204,15 +204,15 @@ iterator: func, invariant, start.
 Convert a tolua created userdata into a table.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
-	  ud: Userdata instance to convert.
+	  <code><em>ud</em></code>: Userdata instance to convert.
 	</li>
 	
 	<li>
-	  flag: Iterate through all (default with nil or false) or only not inherited members.
+	  <code><em>flag</em></code>: Iterate through all (default with nil or false) or only not inherited members.
 	</li>
 	
 </ul>
@@ -223,7 +223,7 @@ Convert a tolua created userdata into a table.
 
 
 <h3>Return value:</h3>
-Table representing the user data.
+<ul>Table representing the user data.</ul>
 
 
 
