@@ -86,7 +86,10 @@ else
   LIBS+=-llua$(LX)
   PIC :=
 endif
+
+# Set default build type
 BUILD ?= ".Release"
+
 # Compiler and Linker
 DEF=$(DEFCOMPAT) -DVERSION='"$(VERSION)"'
 CC=gcc
