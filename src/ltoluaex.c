@@ -6,7 +6,8 @@
 #endif
 
 #define MYNAME  "toluaex"
-#define MYVERSION MYNAME " extensions Version 1.0 for " LUA_VERSION
+#define MYSHORTVERSION "1.0"
+#define MYVERSION MYNAME " extensions Version " MYSHORTVERSION " for " LUA_VERSION
 
 #if 0 /* Lua 5.0 */
 static int getpeers(lua_State *L)
@@ -61,7 +62,11 @@ static int getsuper(lua_State *L)
   }
 }
 
-static const struct luaL_reg R[] = {
+#if LUA_VERSION_NUM > 501
+static const luaL_Reg funcs[] = {
+#else
+static const luaL_reg funcs[] = {
+#endif
 #if 0
   {"getpeers", getpeers},
 #endif
@@ -72,9 +77,18 @@ static const struct luaL_reg R[] = {
 
 LUALIB_API int luaopen_toluaex_core(lua_State *L)
 {
+#if LUA_VERSION_NUM > 501
+  luaL_newlib(L, funcs);
+  lua_pushvalue(L, -1);
+  lua_setglobal(L, MYNAME);
+#else
   luaL_openlib(L, MYNAME, R, 0);
-  lua_pushliteral(L, "version");
+#endif
+  lua_pushliteral(L, "VERSION");
   lua_pushliteral(L, MYVERSION);
+  lua_settable(L, -3);
+  lua_pushliteral(L, "version");
+  lua_pushliteral(L, MYSHORTVERSION);
   lua_settable(L, -3);
   return 1;
 }
