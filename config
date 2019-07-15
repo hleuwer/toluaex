@@ -97,7 +97,7 @@ ifneq (, $(findstring Linux, $(SYSTEM)))
     LUAINC=$(LUA)/include/lua/$(LV)
     LUALIB=
   else
-    LUAINC=$(LUA)/include/lua5.1
+    LUAINC=$(LUA)/include/lua$(LV)
     LUALIB=$(LUA)/lib_64
   endif
 else
