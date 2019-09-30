@@ -31,9 +31,12 @@ LX:=52
 
 # - Lua development headers and libraries
 ifneq (, $(findstring Msys, $(SYSTEM)))
-  LUA="c:\Lua\5.1"
-  LUABIN="c:\Lua\5.1\lua.exe"
-  LUADOC = $(LUABIN) "c:\Lua\5.1\lua\luadoc_start.lua"
+  LUA=c:/usr/local
+  LUABIN=$(LUA)/bin/lua
+  LUADOC=ldoc.bat
+#  LUA="c:\Lua\5.1"
+#  LUABIN="c:\Lua\5.1\lua.exe"
+#  LUADOC = $(LUABIN) "c:\Lua\5.1\lua\luadoc_start.lua"
 else
   LUADOC = ldoc
   ifneq (, $(findstring Linux, $(SYSTEM)))
@@ -122,7 +125,7 @@ else
   # Cygwin/Mingw: need to link against Lua libraries
   ifneq (, $(findstring Msys, $(SYSTEM)))
     SOEXT := dll
-    LIBS+=-llua$(LV)
+    LIBS+=-llua$(LX)
     PIC :=
   else
     SOEXT := dll
